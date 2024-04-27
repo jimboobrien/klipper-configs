@@ -1,0 +1,223 @@
+# Ender3 Microswiss
+# BIG TREE TECH SKR MINI E3V3
+# Raspberry Pi 3 B
+# Octoprint
+
+
+# This file contains common pin mappings for the BIGTREETECH SKR mini
+# E3 v3.0. To use this config, the firmware should be compiled for the
+# STM32G0B1 with a "8KiB bootloader" and USB communication/USART.
+
+# The "make flash" command does not work on the SKR mini E3. Instead,
+# after running "make", copy the generated "out/klipper.bin" file to a
+# file named "firmware.bin" on an SD card and then restart the SKR
+# mini E3 with that SD card.
+
+# See docs/Config_Reference.md for a description of parameters.
+
+#[bltouch]
+#sensor_pin: PC14
+#control_pin: PA1
+#x_offset: -40
+#y_offset: -10
+#z_offset: 3.0
+#speed:
+#pin_up_touch_mode_reports_triggered: False
+
+#[safe_z_home]
+#home_xy_position: 115,115 # Change coordinates to the center of your print bed
+#speed: 50
+#z_hop: 10                 # Move up 10mm
+#z_hop_speed: 5
+
+#[bed_mesh]
+#speed: 120
+#horizontal_move_z: 5
+#mesh_min: 10, 10
+#mesh_max: 190, 220
+#probe_count: 5,5
+
+[stepper_x]
+step_pin: PB13
+dir_pin: !PB12
+enable_pin: !PB14
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PC0
+position_endstop: 0
+position_max: 235
+homing_speed: 50
+
+[tmc2209 stepper_x]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 0
+run_current: 0.580
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[stepper_y]
+step_pin: PB10
+dir_pin: !PB2
+enable_pin: !PB11
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PC1
+position_endstop: 0
+position_max: 235
+homing_speed: 50
+
+[tmc2209 stepper_y]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 2
+run_current: 0.580
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[stepper_z]
+step_pin: PB0
+dir_pin: PC5
+enable_pin: !PB1
+microsteps: 16
+rotation_distance: 8
+endstop_pin: ^PC2 #disable this for bltouch
+position_endstop: 0.0 #disable this for bltouch
+#endstop_pin: probe:z_virtual_endstop #enable this for bltouch
+position_max: 250
+position_min: -2
+
+[tmc2209 stepper_z]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 1
+run_current: 0.580
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[extruder]
+step_pin: PB3
+dir_pin: !PB4
+enable_pin: !PD1
+microsteps: 16
+#rotation_distance: 33.500
+#rotation_distance: 15.87
+#rotation_distance: 20.36
+#rotation_distance: 18.405
+#rotation_distance: 22.535
+#rotation_distance: 22.76
+rotation_distance: 22.237
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: PC8
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: PA0
+control: pid
+pid_Kp: 29.827
+pid_Ki: 1.876
+pid_Kd: 118.564
+#pid_Kp: 21.527
+#pid_Ki: 1.063
+#pid_Kd: 108.982
+min_temp: 0
+max_temp: 250
+#min_extrude_temp: 170
+#pressure_advance: 0.584
+pressure_advance: 0.83
+#   The amount of raw filament to push into the extruder during
+#   extruder acceleration. An equal amount of filament is retracted
+#   during deceleration. It is measured in millimeters per
+#   millimeter/second. The default is 0, which disables pressure
+#   advance.
+pressure_advance_smooth_time: 0.040
+#   A time range (in seconds) to use when calculating the average
+#   extruder velocity for pressure advance. A larger value results in
+#   smoother extruder movements. This parameter may not exceed 200ms.
+#   This setting only applies if pressure_advance is non-zero. The
+#   default is 0.040 (40 milliseconds).
+#min_extrude_temp: 0
+max_extrude_cross_section: 12.0
+
+[tmc2209 extruder]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 3
+run_current: 0.650
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[heater_bed]
+heater_pin: PC9
+sensor_type: ATC Semitec 104GT-2
+sensor_pin: PC4
+control: pid
+pid_Kp: 71.042
+pid_Ki: 1.650
+pid_Kd: 764.589
+#pid_Kp: 54.027
+#pid_Ki: 0.770
+#pid_Kd: 948.182
+min_temp: 0
+max_temp: 130
+
+[heater_fan controller_fan]
+pin: PB15
+heater: heater_bed
+heater_temp: 45.0
+
+[heater_fan nozzle_cooling_fan]
+pin: PC7
+#heater: heater_bed
+#heater_temp: 45.0
+
+[fan]
+pin: PC6
+
+[mcu]
+serial: /dev/serial/by-id/usb-Klipper_stm32g0b1xx_3E0017000450415339373620-if00
+# serial: /dev/ttyAMA0
+# restart_method: command
+
+[printer]
+kinematics: cartesian
+max_velocity: 300
+max_accel: 3000
+max_z_velocity: 5
+max_z_accel: 100
+
+[board_pins]
+aliases:
+    # EXP1 header
+    EXP1_1=PB5,  EXP1_3=PA9,   EXP1_5=PA10, EXP1_7=PB8, EXP1_9=<GND>,
+    EXP1_2=PA15, EXP1_4=<RST>, EXP1_6=PB9,  EXP1_8=PD6, EXP1_10=<5V>
+
+
+######################################################################
+#  BigTreeTech TFT TouchScreen emulated 12864 mode
+######################################################################
+
+[display]
+lcd_type: emulated_st7920
+spi_software_miso_pin: PD8 # status led, Virtual MISO
+spi_software_mosi_pin: PD6
+spi_software_sclk_pin: PB9
+en_pin: PB8
+encoder_pins: ^PA10, ^PA9
+click_pin: ^!PA15
+
+[output_pin beeper]
+pin: PB5
+
+
+[firmware_retraction]
+retract_length: 2.05
+retract_speed: 40
+unretract_extra_length: 0
+unretract_speed: 40
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
+#*# [extruder]
+#*#
+#*# [heater_bed]
