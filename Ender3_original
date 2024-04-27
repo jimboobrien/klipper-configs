@@ -1,0 +1,406 @@
+# Ender3 Original
+# BIG TREE TECH SKR MINI E3 V3
+# CB1
+# Octoprint
+
+# This file contains common pin mappings for the BIGTREETECH SKR mini
+# E3 v3.0. To use this config, the firmware should be compiled for the
+# STM32G0B1 with a "8KiB bootloader" and USB communication/USART.
+
+# The "make flash" command does not work on the SKR mini E3. Instead,
+# after running "make", copy the generated "out/klipper.bin" file to a
+# file named "firmware.bin" on an SD card and then restart the SKR
+# mini E3 with that SD card.
+
+# See docs/Config_Reference.md for a description of parameters.
+
+#[bltouch]
+#sensor_pin: PC14
+#control_pin: PA1
+#x_offset: -40
+#y_offset: -10
+#z_offset: 3.0
+#speed:
+
+#[safe_z_home]
+#home_xy_position: 115,115 # Change coordinates to the center of your print bed
+#speed: 50
+#z_hop: 10                 # Move up 10mm
+#z_hop_speed: 5
+
+#[bed_mesh]
+#speed: 120
+#horizontal_move_z: 5
+#mesh_min: 10, 10
+#mesh_max: 190, 220
+#probe_count: 5,5
+
+[stepper_x]
+step_pin: PB13
+dir_pin: !PB12
+enable_pin: !PB14
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PC0
+position_endstop: 0
+position_max: 235
+homing_speed: 50
+
+[tmc2209 stepper_x]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 0
+run_current: 0.580
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[stepper_y]
+step_pin: PB10
+dir_pin: !PB2
+enable_pin: !PB11
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PC1
+position_endstop: 0
+position_max: 235
+homing_speed: 50
+
+[tmc2209 stepper_y]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 2
+run_current: 0.580
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[stepper_z]
+step_pin: PB0
+dir_pin: PC5
+enable_pin: !PB1
+microsteps: 16
+rotation_distance: 8
+endstop_pin: ^PC2 #disable this for bltouch
+position_endstop: 0.0 #disable this for bltouch
+#endstop_pin: probe:z_virtual_endstop #enable this for bltouch
+position_max: 250
+position_min: -2
+
+[tmc2209 stepper_z]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 1
+run_current: 0.580
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[extruder]
+step_pin: PB3
+dir_pin: !PB4
+enable_pin: !PD1
+microsteps: 16
+#rotation_distance: 33.500
+#rotation_distance: 15.87
+#rotation_distance: 20.36
+#rotation_distance: 21.907
+#rotation_distance: 23.305
+rotation_distance: 22.144
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: PC8
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: PA0
+#control: pid
+#pid_Kp: 21.527
+#pid_Ki: 1.063
+#pid_Kd: 108.982
+#pid_Kp: 31.166 
+#pid_Ki: 2.444
+#pid_Kd: 99.341
+min_temp: 0
+max_temp: 250
+min_extrude_temp: 170
+#pressure_advance: 0.722
+pressure_advance: 1.0358
+#   The amount of raw filament to push into the extruder during
+#   extruder acceleration. An equal amount of filament is retracted
+#   during deceleration. It is measured in millimeters per
+#   millimeter/second. The default is 0, which disables pressure
+#   advance.#pressure_advance_smooth_time: 0.040
+#   A time range (in seconds) to use when calculating the average
+#   extruder velocity for pressure advance. A larger value results in
+#   smoother extruder movements. This parameter may not exceed 200ms.
+#   This setting only applies if pressure_advance is non-zero. The
+#   default is 0.040 (40 milliseconds).
+#min_extrude_temp: 0
+max_extrude_only_distance: 101
+
+[tmc2209 extruder]
+uart_pin: PC11
+tx_pin: PC10
+uart_address: 3
+run_current: 0.650
+hold_current: 0.500
+stealthchop_threshold: 999999
+
+[heater_bed]
+heater_pin: PC9
+sensor_type: ATC Semitec 104GT-2
+sensor_pin: PC4
+#control: pid
+#pid_Kp: 54.027
+#pid_Ki: 0.770
+#pid_Kd: 948.182
+#pid_Kp: 67.232
+#pid_Ki: 1.455
+#pid_Kd: 776.528
+min_temp: 0
+max_temp: 130
+
+[heater_fan controller_fan]
+pin: PB15
+#heater: extruder
+#heater_temp: 50.0
+heater: heater_bed
+heater_temp: 45.0
+
+[heater_fan nozzle_cooling_fan]
+pin: PC6
+heater: extruder
+heater_temp: 50.0
+
+[fan]
+pin: PC7
+
+[mcu]
+serial: /dev/serial/by-id/usb-Klipper_stm32g0b1xx_55002A001750425938323120-if00
+# serial: /dev/ttyAMA0
+# restart_method: command
+
+[printer]
+kinematics: cartesian
+max_velocity: 300
+max_accel: 3000
+max_z_velocity: 5
+max_z_accel: 100
+
+[board_pins]
+aliases:
+    # EXP1 header
+    EXP1_1=PB5,  EXP1_3=PA9,   EXP1_5=PA10, EXP1_7=PB8, EXP1_9=<GND>,
+    EXP1_2=PA15, EXP1_4=<RST>, EXP1_6=PB9,  EXP1_8=PD6, EXP1_10=<5V>
+
+
+
+#[verify_heater nozzle_cooling_fan]
+#max_error: 150
+#   The maximum "cumulative temperature error" before raising an
+#   error. Smaller values result in stricter checking and larger
+#   values allow for more time before an error is reported.
+#   Specifically, the temperature is inspected once a second and if it
+#   is close to the target temperature then an internal "error
+#   counter" is reset; otherwise, if the temperature is below the
+#   target range then the counter is increased by the amount the
+#   reported temperature differs from that range. Should the counter
+#   exceed this "max_error" then an error is raised. The default is
+#   120.
+#check_gain_time:
+#   This controls heater verification during initial heating. Smaller
+#   values result in stricter checking and larger values allow for
+#   more time before an error is reported. Specifically, during
+#   initial heating, as long as the heater increases in temperature
+#   within this time frame (specified in seconds) then the internal
+#   "error counter" is reset. The default is 20 seconds for extruders
+#   and 60 seconds for heater_bed.
+#hysteresis: 5
+#   The maximum temperature difference (in Celsius) to a target
+#   temperature that is considered in range of the target. This
+#   controls the max_error range check. It is rare to customize this
+#   value. The default is 5.
+#heating_gain: 2
+#   The minimum temperature (in Celsius) that the heater must increase
+#   by during the check_gain_time check. It is rare to customize this
+#   value. The default is 2.
+
+
+
+
+
+###############################################################################
+#
+#  PAUSE and PARK
+#
+#  Implemlents a PARK command that moves the toolhead and bed somewhere safe
+#  using minimum and maximum axis data from the config file so it should
+#  work without additional configuration. For use in PAUSE, CANCEL_PRINT,
+#  END_PRINT, START_PRINT, M600 etc,. Anywhere we need to put the toolhead
+#  somewhere safe.
+# 
+#  Consider https://github.com/mainsail-crew/MainsailOS/blob/master/src/modules/mainsail/filesystem/home/pi/klipper_config/mainsail.cfg
+#  it is newer and potentially better maintained.
+#
+#  PAUSE and RESUME save position, do a retract and park.
+#  
+#  Use the following lines in you your printer cfg
+#  [include strayr-k-macros/common.cfg] # only needed once
+# 
+#  PAUSE and RESUME use the Save Variables functionality for thier retraction
+#  behaviour, I shall add some standaline versions that require direct editing.
+#   
+#   For standalone use replace this line
+#   {% set e = svv.filament_pause_retraction|float %}  #comment out this line if you want a standalone macro
+#   With a hard coded value
+#   {% set e = 3|float %} 
+#
+####
+
+[pause_resume]  # Required, harmless to define twice
+
+[display_status] # Helpful, can remove if no display
+
+
+[gcode_macro PARK]
+gcode:
+    {% set z_max = printer.toolhead.axis_maximum.z %}   
+    {% set z_pos = printer.toolhead.position.z %}
+    {% set y_max = printer.toolhead.axis_maximum.y %}
+    {% set y_min = printer.toolhead.axis_minimum.y %}
+    {% set x_min = printer.toolhead.axis_minimum.x %}
+    {% set travel_speed = printer.toolhead.max_velocity * 0.7 * 60 %}
+    {% set z_travel_speed = printer.configfile.settings.printer.max_z_velocity * 60 %}
+    {% set park_height = 100 %}
+
+    ## This sets your park position, it should be safe, BUT test carfully
+    ## It uses the data from printer.toolhead which is the live data on where the toolhead can be moved
+    ## If this gets it wrong, check your config file for min/max positions is correct
+    {% set x = params.X|default(x_min + 5) %}      #edit to your park position
+    {% set y = params.Y|default(y_min + 5) %}      #edit to your park position
+    {% set z = params.Z|default(park_height)|float %} #edit to your park position
+    
+    
+
+    {% if z_pos > (z_max ) %}
+      M117 Z {z_pos} Cant raise
+      UPDATE_DELAYED_GCODE ID=clear_display DURATION=10
+    {% elif z_pos > park_height + 0.04 %}
+      #M117 Z {z_pos} goto { (( z_max - 10 - z_pos) * 0.5 ) + z_pos }
+      UPDATE_DELAYED_GCODE ID=clear_display DURATION=10
+      G1 Z { (( z_max - 10 - z_pos) * 0.5 ) + z_pos } F600
+    {% elif z_pos < park_height -0.04 %}
+      #M117 Z {z_pos} goto {park_height}
+      UPDATE_DELAYED_GCODE ID=clear_display DURATION=10
+      G1 Z {z} F{z_travel_speed}
+    {% else %}
+      M117 I think we are already at park height
+      UPDATE_DELAYED_GCODE ID=clear_display DURATION=10
+    {% endif %}
+    G1 Y {y} X {x} F{travel_speed}
+	
+
+[gcode_macro PAUSE]
+rename_existing: BASE_PAUSE
+gcode:
+    ##### set defaults #####
+    {% set svv = printer.save_variables.variables %}
+    {% set e = svv.filament_pause_retraction|float %}  #comment out this line if you want a standalone macro
+    # {% set e = 3|float %}                            #and uncomment this one
+
+    {% set x = params.X|default(printer.toolhead.axis_minimum.x + 2 ) %}      #edit to your park position
+    {% set y = params.Y|default(printer.toolhead.axis_minimum.y + 2) %}      #edit to your park position
+    ##### end of definitions #####
+    SAVE_GCODE_STATE NAME=PAUSE_state
+    BASE_PAUSE
+        
+    {%if printer.extruder.can_extrude %}
+        G91
+        G1 E-{e} F2100 #negative for retraction
+        G90
+    {% endif %}
+    PARK X={x} Y={y}
+    
+
+
+[gcode_macro RESUME]
+rename_existing: BASE_RESUME
+gcode:
+    ##### set defaults #####
+    {% set svv = printer.save_variables.variables %}
+    {% set e = svv.filament_pause_retraction|float %}  #comment out this line if you want a standalone macro
+    # {% set e = 3|float %}                            #and uncomment this one
+    {%if printer.extruder.can_extrude %}
+        G91
+        G1 E{e} F2100  #we really want a positive extrude here
+        G90
+    {% endif %}
+    
+    RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
+    BASE_RESUME
+
+
+
+
+
+
+
+######################################################################
+#  BigTreeTech TFT TouchScreen emulated 12864 mode
+######################################################################
+
+
+# NEW BTT TOUCHSCREEN DISPLAY
+#[display]
+#lcd_type: emulated_st7920 
+#spi_software_miso_pin: EXP2_1 
+#spi_software_mosi_pin: EXP1_3 
+#spi_software_sclk_pin: EXP1_5 
+#en_pin: EXP1_4 
+#encoder_pins: EXP2_3, EXP2_5 
+#click_pin: !EXP1_2
+
+
+
+# OLD DEFAULT DISPLAY
+[display]
+lcd_type: emulated_st7920
+spi_software_miso_pin: PD8 # status led, Virtual MISO
+spi_software_mosi_pin: PD6
+spi_software_sclk_pin: PB9
+en_pin: PB8
+encoder_pins: ^PA10, ^PA9
+click_pin: ^!PA15
+
+[output_pin beeper]
+pin: PB5
+
+
+
+
+
+[gcode_macro SET_RETRACTIONLENGTH]
+gcode:
+  SET_RETRACTION RETRACT_LENGTH={params.LENGTH|float}
+  GET_RETRACTION
+  
+  
+  
+  
+[firmware_retraction]
+retract_length: 0.8
+retract_length: 2.0
+retract_speed: 40
+unretract_extra_length: 0
+unretract_speed: 40
+
+#*# <---------------------- SAVE_CONFIG ---------------------->
+#*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
+#*#
+#*# [extruder]
+#*# control = pid
+#*# pid_kp = 31.166
+#*# pid_ki = 2.444
+#*# pid_kd = 99.341
+#*#
+#*# [heater_bed]
+#*# control = pid
+#*# pid_kp = 67.232
+#*# pid_ki = 1.455
+#*# pid_kd = 776.528
